@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <style>
+            .btn {
+                position: absolute;
+                border: 2px solid black;
+                padding: 15px 32px;
+                background-color: white;
+                color: black;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px; 
+                margin-left: 50px;
+                height:50px;
+                width:200px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div><button class="btn" id = "button1" style = "margin-top: 50px;">Work Time</button></div>
+        <div><button class="btn" id = "button2"style = "margin-top: 100px;">Small Break</button></div>
+        <div><button class="btn" id = "button3" style = "margin-top: 150px;">Work Time</button></div>
+        <div><button class="btn" id = "button4" style = "margin-top: 200px;">Small Break</button></div>
+        <div><button class="btn" id = "button5" style = "margin-top: 250px;">Work Time</button></div>
+        <div><button class="btn" id = "button6" style = "margin-top: 300px;">Long Break</button></div>
+        <textarea cols="3" rows="1" id = "minutes" style = "font-size: 30px; text-align: center; border: 2px solid black; 
+            border-radius: 5px;  margin-top: 75px; margin-left: 600px"></textarea>
+        <textarea cols="3" rows="1" id = "seconds" style = "font-size: 30px; text-align: center; border: 2px solid black; border-radius: 5px"></textarea>
+
+        <script>
+            var isTimerSet = false;
+            var counter = 1;
+            var timerType = "Work Time Remaining";
+            var deadline = new Date().getTime() + 1000 * 60 * 60;
+
+            var x = setInterval(function () {
+                console.log(isTimerSet);
+                console.log(counter);
+                if (!isTimerSet) {
+                    timerType = "Break Time Remaining";
+                    if (counter % 2 == 0) {
+                        if (counter % 6 == 0) {
+                            deadline = new Date().getTime() + 1000 * 60 * 30;
+                        } else {
+                            deadline = new Date().getTime() + 1000 * 60 * 10;
+                        }
+                    } else {
+                        timerType = "Work Time Remaining";
+                        if (counter % 6 == 5) {
+                            deadline = new Date().getTime() + 1000 * 60 * 30;
+                        } else {
+                            deadline = new Date().getTime() + 1000 * 60 * 50;
+                        }
+                    }
+
+                    document.getElementById("button" + counter.toString()).style.backgroundColor = "#28B463";
+                    isTimerSet = true;
+                } else {
+                    console.log('Came Here');
+                    var now = new Date().getTime();
+                    var t = deadline - now;
+
+                    if (t <= 0) {
+                        isTimerSet = false;
+                        document.getElementById("button" + counter.toString()).style.backgroundColor = "#FFFFFF";
+                        counter %= 6;
+                        counter++;
+                    } else {
+                        var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((t % (1000 * 60)) / 1000);
+                        
+                        document.getElementById("minutes").innerHTML = minutes;
+                        document.getElementById("seconds").innerHTML = seconds;
+                    }
+                }
+            }, 1000); 
+        </script>
+    </body>
+</html>
