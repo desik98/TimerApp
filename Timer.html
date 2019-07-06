@@ -32,14 +32,10 @@
         <script>
             var isTimerSet = false;
             var counter = 1;
-            var timerType = "Work Time Remaining";
             var deadline = new Date().getTime() + 1000 * 60 * 60;
 
             var x = setInterval(function () {
-                console.log(isTimerSet);
-                console.log(counter);
                 if (!isTimerSet) {
-                    timerType = "Break Time Remaining";
                     if (counter % 2 == 0) {
                         if (counter % 6 == 0) {
                             deadline = new Date().getTime() + 1000 * 60 * 30;
@@ -47,7 +43,6 @@
                             deadline = new Date().getTime() + 1000 * 60 * 10;
                         }
                     } else {
-                        timerType = "Work Time Remaining";
                         if (counter % 6 == 5) {
                             deadline = new Date().getTime() + 1000 * 60 * 30;
                         } else {
@@ -58,11 +53,20 @@
                     document.getElementById("button" + counter.toString()).style.backgroundColor = "#28B463";
                     isTimerSet = true;
                 } else {
-                    console.log('Came Here');
                     var now = new Date().getTime();
                     var t = deadline - now;
 
                     if (t <= 0) {
+                        if (counter % 2 != 0) {
+                            var audio = document.createElement('audio');
+                            audio.style.display = "none";
+                            audio.src = '/Users/desikm/Documents/Clock-sound-tick-tock.mp3';
+                            audio.autoplay = true;
+                            audio.onended = function(){
+                                audio.remove();
+                            };
+                        }
+
                         isTimerSet = false;
                         document.getElementById("button" + counter.toString()).style.backgroundColor = "#FFFFFF";
                         counter %= 6;
